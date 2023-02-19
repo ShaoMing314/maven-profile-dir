@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.shaoming</groupId>
+    <artifactId>maven-profile-dir</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- 指定资源文件复制过程中采用的编码方式 -->
+        <encoding>UTF-8</encoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.11</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <!-- 开发环境 -->
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>prd</id>
+            <properties>
+                <profiles.active>prd</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>maven-profile-dir</finalName>
+        <!-- filter 具体基本没用 -->
+<!--        <filters>-->
+<!--            <filter>src/main/resources/profiles/${profiles.active}/jdbc.properties</filter>-->
+<!--        </filters>-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 这个filter必须要设为true, 把所有文件都过滤掉，然后下面再手动include，一个一个文件夹自己添加 -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>my.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>log4j.properties</exclude>
+                    <exclude>jdbc.properties</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <!-- 这里会直接把${profiles.active}对应文件夹下的内容打包到classpath下 -->
+                <directory>src/main/resources/profiles/${profiles.active}</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <!-- 这个filter必须要设为true, 把所有文件都过滤掉，然后下面再手动include，一个一个文件夹自己添加 -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>my.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>log4j.properties</exclude>
+                    <exclude>jdbc.properties</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <!-- 这里会直接把${profiles.active}对应文件夹下的内容打包到classpath下 -->
+                <directory>src/test/resources/profiles/${profiles.active}</directory>
+            </testResource>
+        </testResources>
+    </build>
+</project>
