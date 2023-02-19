@@ -5,5 +5,7 @@
 > https://mp.weixin.qq.com/s/3p53kBHqys58QdMme6lR4A
 
 ## 项目地址
+> https://gitee.com/shao_ming314/maven-profile-dir
+
 
 
